@@ -7,5 +7,11 @@ Create Table book(
   ISBN VARCHAR(20),
   UNIQUE KEY unique_isbn (ISBN),
   author VARCHAR(40),
-  publisher VARCHAR(100),  
+  publisher VARCHAR(100)
   );
+  
+-- INSERT example
+  INSERT INTO book (title, description, ISBN, author, publisher)
+VALUES ('Cardinal','description of book','S23K45AO','Stavanger','theMcdonald');
+
+
