@@ -1,6 +1,8 @@
-CREATE DATABASE Book
+CREATE DATABASE Book;
 
-Create Table book(
+use Book;
+
+Create Table Book(
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(50),
   description VARCHAR(200),
@@ -9,6 +11,10 @@ Create Table book(
   author VARCHAR(40),
   publisher VARCHAR(100)
   );
+  
+--   add BLOB into book table
+  ALTER TABLE BOOK ADD COLUMN picture blob;
+  
   
 -- INSERT example
   INSERT INTO book (title, description, ISBN, author, publisher)
