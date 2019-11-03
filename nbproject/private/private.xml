@@ -3,15 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/src/java/com/soen387/repository/core/entity.java</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/web/login.jsp</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/web/index.jsp</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/src/conf/MANIFEST.MF</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/src/java/com/soen387/repository/core/repositoryCore.java</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/src/java/com/soen387/repository/core/loggedin.java</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/src/java/com/soen387/repository/core/session.java</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/web/META-INF/context.xml</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387_A1/SOEN387A2/web/css/login.css</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/index.jsp</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/bookModification.jsp</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/src/java/com/soen387/repository/core/session.java</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/src/java/com/soen387/repository/core/repositoryCore.java</file>
         </group>
     </open-files>
 </project-private>

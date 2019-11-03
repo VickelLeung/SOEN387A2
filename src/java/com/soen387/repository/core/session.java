@@ -5,6 +5,10 @@
  */
 package com.soen387.repository.core;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 /**
  *
  * @author Vicke
@@ -29,5 +33,23 @@ public class session {
     public void logout(){
         
     }
+    
+    /**
+     * Connect to the test.db database
+     *
+     * @return the Connection object
+     */
+//    private Connection connect() {
+//        // SQLite connection string
+//        String url = "jdbc:sqlite:C://sqlite/db/test.db";
+//        Connection conn = null;
+//        try {
+//            conn = DriverManager.getConnection(url);
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+//        return conn;
+//    }
+    
     
 }

@@ -19,6 +19,13 @@
         <div id="loginContainer">
              <h3>Homepage</h3>
             
+             <a href="addUpdateBook.jsp" > Add/Update Book</a>
+             <a href="deleteBook.jsp" >Delete Book</a>
+              
+             <a href="logout.jsp" >Logout</a>
+                
+             <p>Display lists of books</p>
+             
         </div>
         
         

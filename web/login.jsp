@@ -13,15 +13,21 @@
         <title>Login page</title>
     </head>
     <body>
-        <h1>SOEN 387 - Book Repository</h1>
-        
-       
+        <h1>SOEN 387 - Book Repository</h1>       
         <div id="loginContainer">
              <h3>Login</h3>
             <form>
+                <div className="userInput">
                 <p>Username: <input type="text"/> </p>
+                </div>
+                
+                <divclassName="userInput">
                 <p>Password: <input type="password"/> </p>
+                </div>
+                
+                <div className="submitBtn">
                 <input type="submit"/>
+                </div>
             </form>
         </div>
         

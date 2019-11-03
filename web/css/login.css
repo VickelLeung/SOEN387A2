@@ -14,3 +14,12 @@ and open the template in the editor.
     border: 1px solid black;
     padding: 2% 10%;
 }
+
+.userInput{
+    
+}
+
+.submitBtn{
+    border:2px solid blue;
+    background-color: #A3F7E9;
+}
