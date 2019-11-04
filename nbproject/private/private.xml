@@ -4,10 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/index.jsp</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/bookModification.jsp</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/addUpdateBook.jsp</file>
             <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/src/java/com/soen387/repository/core/session.java</file>
-            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/src/java/servlets/addUpdateBook.java</file>
             <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/src/java/com/soen387/repository/core/repositoryCore.java</file>
+            <file>file:/C:/Users/Vicke/Documents/github%20repository/SOEN387A2/web/deleteBook.jsp</file>
         </group>
     </open-files>
 </project-private>

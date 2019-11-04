@@ -8,6 +8,8 @@ package servlets;
 import com.soen387.repository.core.repositoryCore;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -72,11 +74,15 @@ public class addUpdateBook extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         if (request.getParameter("addBtn") != null) {
-            repo.updateBookInfo(1, "hi");
+            try {
+                repo.updateBookInfo(1, "hi");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
+            }
             out.println("updated book");
         }
         else if(request.getParameter("showBtn") !=null){
-            int t = repo.getBookInfo(1);
+            String t = repo.getBookInfo(1);
             out.println("show");
             out.println(t);
         }

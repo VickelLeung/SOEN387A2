@@ -29,6 +29,8 @@ public class repositoryCore {
     
      public static void main(String[] args){
          
+         //setup the connection
+         
      }
     
     
@@ -70,17 +72,19 @@ public class repositoryCore {
    
  }   
  
- public int getBookInfo(int id){
+ //return id of book to get info
+ public String getBookInfo(int id){
      
-     Connection myCon = null;
-         Statement myStm = null;
-         ResultSet myRs = null;
+        Connection myCon = null;
+        Statement myStm = null;
+        ResultSet myRs = null;
+       
         
-         String user = "root";
-         String pw = "reactgod";
-         String dbURL = "jdbc:mysql://localhost:3306/Book";
-         String values = "";
-          
+        String user = "soen387a2";
+        String pw = "Lr00IQ5T~!Ma";
+        String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
+         
+        String val  = "";
       try {
 
         myCon = DriverManager.getConnection(dbURL, user, pw);
@@ -91,6 +95,8 @@ public class repositoryCore {
              while(myRs.next()){
             System.out.println(myRs.getString("title"));
             System.out.println(myRs.getString("ISBN"));
+            val += myRs.getString("title");
+            val += myRs.getString("ISBN");
         }
         
         myRs.close();
@@ -102,8 +108,8 @@ public class repositoryCore {
         t.printStackTrace();
         }
         
-     
-     return 0;
+     return val;
+//     return 0;
  }
  
  
@@ -143,17 +149,17 @@ public int addNewBook(String bookInfo){
     return ok;
 }
     
-public void updateBookInfo(int id, String bookInfo){
+public void updateBookInfo(int id, String bookInfo) throws ClassNotFoundException{
         Connection myCon = null;
         Statement myStm = null;
        
-        String user = "root";
-        String pw = "reactgod";
-        String dbURL = "jdbc:mysql://localhost:3306/Book";
-        String values = "";
+        String user = "soen387a2";
+        String pw = "Lr00IQ5T~!Ma";
+        String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
           
+        String values="";
       try {
-
+        Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
          
