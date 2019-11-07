@@ -17,39 +17,81 @@ import javax.persistence.Id;
  */
 @Entity
 public class Book implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
+      
+     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private static String isbn;
+    private static String title;
+    private static String description;
+    private static final long serialVersionUID = 1L;
+    private static String firstName;
+    private static String lastName;
+  
+    public Book(){
 
-    public Long getId() {
+        isbn = null;
+        title = null;
+        description = null;
+    }
+    
+    public Book(String is, String t, String desc , Author a){
+        
+        
+        setFirstName(a.getFirstName());
+        setLastName(a.getLastName());
+        title = t;
+        description = desc;
+        isbn = is;
+    }
+    
+    public void setId(long i){
+        id = i;
+    }
+    
+    public void setIsbn(String isbn){
+        isbn = this.isbn;
+    }
+    
+    public void setTitle(String t){
+        title = t;
+    }
+    
+    public void setDescription(String desc){
+        description = desc;
+    }
+    
+    public long getId(){
         return id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    
+    public String getIsbn(){
+        return isbn;
+    }
+    
+    public String getTitle(){
+        return title;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public String getDescription(){
+        return description;
     }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Book)) {
-            return false;
-        }
-        Book other = (Book) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    
+    public String getFirstName(){
+        return firstName;
     }
-
+    
+    public String getLastName(){
+        return lastName;
+    }
+    
+    public void setFirstName(String fn){
+        firstName = fn;
+    }
+    public void setLastName(String ln){
+        lastName = ln;
+    }
+    
     @Override
     public String toString() {
         return "com.soen387.repository.core.Book[ id=" + id + " ]";

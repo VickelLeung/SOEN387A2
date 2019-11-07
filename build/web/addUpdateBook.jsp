@@ -15,18 +15,21 @@
         <h1>Add or Update your book!</h1>
         <form action="${pageContext.request.contextPath}/addUpdateBook" method="POST">
          
-                <span>Title</span><input type="text" />
-                <span>Description</span><input type="text" />       
-                <span>ISBN</span><input type="text" />          
-                <span>Author</span><input type="text" />           
-                <span>Publisher</span><input type="text" />           
-                <span>Cover</span><input type="text" />
+                <span>Title</span><input name="title" type="text" />
+                <span>Description</span><input name="description" type="text" />       
+                <span>ISBN</span><input name="isbn" type="text" />   
+                <p>Author</p>
+                <span>First Name</span><input name="firstName" type="text" />         
+                <span>Last Name</span><input name="lastName" type="text" />  
+                <span>Publisher</span><input name="f" type="text" />           
+                <span>Cover</span><input name="cover" type="text" />
             <input type="submit" name="addBtn" value="Add book" />
+            <input type="submit" name="updateBtn" value="Update book" />
         </form>   
-        
+<!--        
         <form action="${pageContext.request.contextPath}/addUpdateBook" method="POST">
           
-            <input type="submit" name="showBtn" value="Show book" />
-        </form>
+            <input type="submit" name="updateBtn" value="Update book" />
+        </form>-->
     </body>
 </html>

@@ -5,6 +5,8 @@
  */
 package servlets;
 
+import com.soen387.repository.core.Author;
+import com.soen387.repository.core.Book;
 import com.soen387.repository.core.repositoryCore;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,31 +70,52 @@ public class addUpdateBook extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        repositoryCore repo = new repositoryCore();
-        
+            
           response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+            
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+        String isbn = request.getParameter("isbn");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String publisher = request.getParameter("publisher");
+        String cover = request.getParameter("cover");
+           
+        repositoryCore repo = new repositoryCore();
         
-        if (request.getParameter("addBtn") != null) {
-            try {
-                repo.updateBookInfo(1, "hi");
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
+//         public Book(String isbn, String title, String description, String firstName, String lastName){
+////         isbn = this.id;
+//        Author a = new Author(firstName, lastName);
+//        title = this.title;
+//        description = this.description;
+//    }
+        Author a1 = new Author(firstName, lastName);
+        Book b1 = new Book(isbn, title, description, a1);
+        
+        if(!"".equals(isbn) && !"".equals(title) && !"".equals(description) ){
+            if (request.getParameter("addBtn") != null) {
+                  try {
+                      repo.addNewBook(b1);
+                  } catch (ClassNotFoundException ex) {
+                      Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+                out.println("updated book");
             }
-            out.println("updated book");
+            else if(request.getParameter("updateBtn") != null){
+                  try {
+                      repo.updateBookInfo(1, b1);
+                  } catch (ClassNotFoundException ex) {
+                      Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+                out.println("show");
+            }
         }
-        else if(request.getParameter("showBtn") !=null){
-            String t = repo.getBookInfo(1);
-            out.println("show");
-            out.println(t);
-        }
-        
-       
-        
-        
-        out.println("book added sucessfully.");
-        
-        
+            
+        out.println("Sucessfully addeed to respository for book.\n");
+        out.println("Title: " + title + "\nisbn: " + isbn + "\ndescription: " + description + " ");
+            
+       response.sendRedirect(response.encodeRedirectURL("http://localhost:8080/SOEN387A2/"));
 //           out.println("Error, the book was not added.");
         
 //            else if (request.getParameter("button2") != null) {
@@ -104,6 +127,9 @@ public class addUpdateBook extends HttpServlet {
 //        }
 
 //        request.getRequestDispatcher("/WEB-INF/some-result.jsp").forward(request, response);
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

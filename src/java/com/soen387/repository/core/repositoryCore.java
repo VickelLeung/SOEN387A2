@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -27,49 +28,55 @@ public class repositoryCore {
     private static String publisher;
     private static String cover;
     
+     private static final String user = "soen387a2";
+     private static final String pw = "Lr00IQ5T~!Ma";
+     private static final String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
+    
      public static void main(String[] args){
          
          //setup the connection
+  
+     }
+     
+     public repositoryCore(){}
+    
+     public repositoryCore(String title, String desciption, String isbn, String firstName, String lastName){
+//         Book b = new Book(title, description, isbn, firstName, lastName);
          
      }
-    
-    
- public static void listAllBooks(){
      
+    
+ public String listAllBooks() throws ClassNotFoundException, SQLException{
+         
+        String bookList="";  
         Connection myCon = null;
         Statement myStm = null;
         ResultSet myRs = null;
-        ResultSet insert=null;
-
-        String user = "root";
-        String pw = "reactgod";
-        String dbURL = "jdbc:mysql://localhost:3306/Book";
-        String values = "";
-          
-      try {
-
+      
+           
+        Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
-          
-    
-            myRs = myStm.executeQuery("select * from book");
-             while(myRs.next()){
-            System.out.println(myRs.getString("title"));
-            System.out.println(myRs.getString("ISBN"));
-           
-        }
+            
+           String sql ="SELECT * FROM book";
+
+            myRs = myStm.executeQuery(sql);
+            while(myRs.next()){
+         
+            bookList+= "<tr bgcolor='#E0FFFF'>";
+
+            bookList += "<td>"+myRs.getString("title")+"</td>";
+            bookList += "<td>"+myRs.getString("ISBN")+"</td>";
+            bookList += "<td>"+myRs.getString("description")+"</td>";
+            bookList += "<td>"+myRs.getString("firstName")+"</td>";
+            bookList += "<td>"+myRs.getString("lastName")+"</td>";
+            bookList += "<td>"+myRs.getString("publisher")+"</td>";
+            bookList+= "</tr>";
+            }
         
         myRs.close();
         
-        values ="VALUES('here johnny','johnnyboi','S8K25O90','will smith','actions');";
-        myStm.executeUpdate("INSERT INTO book (title, description, ISBN, author, publisher)" + values);
-        
-        } catch(SQLException e) {
-        for (Throwable t : e)
-        t.printStackTrace();
-        }
-        
-   
+   return bookList;
  }   
  
  //return id of book to get info
@@ -78,11 +85,6 @@ public class repositoryCore {
         Connection myCon = null;
         Statement myStm = null;
         ResultSet myRs = null;
-       
-        
-        String user = "soen387a2";
-        String pw = "Lr00IQ5T~!Ma";
-        String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
          
         String val  = "";
       try {
@@ -118,24 +120,29 @@ public class repositoryCore {
      return "";
  }
     
-public int addNewBook(String bookInfo){
+public int addNewBook(Book bookInfo) throws ClassNotFoundException{
         int ok = 0;
         
         Connection myCon = null;
         Statement myStm = null;
-       
-        String user = "root";
-        String pw = "reactgod";
-        String dbURL = "jdbc:mysql://localhost:3306/Book";
-        String values = "";
-          
-      try {
 
+        String values = "";
+        
+        String getTitle = bookInfo.getTitle();
+        String getDescription = bookInfo.getDescription();
+        String getIsbn = bookInfo.getIsbn();
+        String firstName = bookInfo.getFirstName();
+        String lastName = bookInfo.getLastName();
+        
+//        System.out.println("t:" + getTitle + " desc:" + getDescription + " isb:" + getIsbn);
+ 
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
-         
-        values ="VALUES('here johnny','johnnyboi','S8K25O90','will smith','actions');";
-        myStm.executeUpdate("INSERT INTO book (title, description, ISBN, author, publisher)" + values);
+        
+        values ="VALUES('"+getTitle+"','"+getDescription+"','"+getIsbn+"','"+ firstName +"','"+ lastName +"','actions');";
+        myStm.executeUpdate("INSERT INTO book (title, description, ISBN, firstName, lastName, publisher)" + values);
         myStm.close();
         
         //book added
@@ -143,35 +150,35 @@ public int addNewBook(String bookInfo){
         } catch(SQLException e) {
         for (Throwable t : e)
         t.printStackTrace();
-        }
-        
+        }     
     
     return ok;
 }
     
-public void updateBookInfo(int id, String bookInfo) throws ClassNotFoundException{
+public void updateBookInfo(int id, Book b) throws ClassNotFoundException{
         Connection myCon = null;
         Statement myStm = null;
-       
-        String user = "soen387a2";
-        String pw = "Lr00IQ5T~!Ma";
-        String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
-          
-        String values="";
+      
       try {
         Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
-         
-        values ="VALUES('here johnny','johnnyboi','S8K25O90','will smith','actions');";
-        myStm.executeUpdate("INSERT INTO book (title, description, ISBN, author, publisher)" + values);
+        
+        String getTitle = b.getTitle();
+        String getDescription = b.getDescription();
+        String getIsbn = b.getIsbn();
+        String firstName = b.getFirstName();
+        String lastName = b.getLastName();
+        
+        System.out.println("t :" + getTitle + " desc: " + getDescription);
+        
+        myStm.executeUpdate("UPDATE book SET title = "+ "\"" +getTitle + "\"" + " SET description =" + "\"" +getDescription + "\"" + " SET firstName = "+ "\"" +firstName 
+                + "\"" + " SET lastName = " + "\""  +lastName + "\"" + "WHERE ISBN =" +"\"" +getIsbn +"\"");
         myStm.close();
         } catch(SQLException e) {
         for (Throwable t : e)
         t.printStackTrace();
         }
-        
-   
 }
 
 public void setImage(){
@@ -183,7 +190,6 @@ public void deleteBook(int id){
 }
 
 public void deleteAllBooks(){
-    
 }
 
 }

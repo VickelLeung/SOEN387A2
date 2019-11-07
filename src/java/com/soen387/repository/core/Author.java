@@ -18,9 +18,21 @@ import javax.persistence.Id;
 @Entity
 public class Author implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static String firstName;
+    private static String lastName;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    public Author(){
+        firstName = null;
+        lastName = null;
+    }
+    
+    public Author(String fn, String ln){
+        firstName = fn;
+        lastName = ln;
+    }
 
     public Long getId() {
         return id;
@@ -53,6 +65,22 @@ public class Author implements Serializable {
     @Override
     public String toString() {
         return "com.soen387.repository.core.Author[ id=" + id + " ]";
+    }
+
+    public void setFirstName(String fn){
+        firstName = fn;
+    }
+    
+    public void setLastName(String ln){
+        lastName = ln;
+    }
+    
+    public String getFirstName(){
+        return firstName;
+    }
+    
+    public String getLastName(){
+        return lastName;
     }
     
 }
