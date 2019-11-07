@@ -1,6 +1,7 @@
-CREATE DATABASE Book;
+show databases;
 
-use Book;
+use soen387a2;
+
 
 Create Table Book(
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -8,7 +9,8 @@ Create Table Book(
   description VARCHAR(200),
   ISBN VARCHAR(20),
   UNIQUE KEY unique_isbn (ISBN),
-  author VARCHAR(40),
+  firstName VARCHAR(100),
+  lastName VARCHAR(100),
   publisher VARCHAR(100)
   );
   
@@ -17,7 +19,7 @@ Create Table Book(
   
   
 -- INSERT example
-  INSERT INTO book (title, description, ISBN, author, publisher)
-VALUES ('Cardinal','description of book','S23K45AO','Stavanger','theMcdonald');
+  INSERT INTO book (title, description, ISBN, firstName, lastName, publisher)
+VALUES ('Cardinal','description of book','S23K45AO','Stavanger','Smith','theMcdonald');
 
-
+select * from book;
