@@ -27,6 +27,8 @@ public class Book implements Serializable {
     private static final long serialVersionUID = 1L;
     private static String firstName;
     private static String lastName;
+    private static String publisherCompany;
+    private static String publisherAddress;
   
     public Book(){
 
@@ -35,7 +37,7 @@ public class Book implements Serializable {
         description = null;
     }
     
-    public Book(String is, String t, String desc , Author a){
+    public Book(String is, String t, String desc , Author a, String pc, String pa){
         
         
         setFirstName(a.getFirstName());
@@ -43,6 +45,8 @@ public class Book implements Serializable {
         title = t;
         description = desc;
         isbn = is;
+        publisherCompany = pc;
+        publisherAddress = pa;
     }
     
     public void setId(long i){
@@ -84,12 +88,28 @@ public class Book implements Serializable {
     public String getLastName(){
         return lastName;
     }
+   
+      public String getPublisherCompany(){
+        return publisherCompany;
+    }
+    
+    public String getPublisherAddress(){
+        return publisherAddress;
+    }
     
     public void setFirstName(String fn){
         firstName = fn;
     }
     public void setLastName(String ln){
         lastName = ln;
+    }
+    
+    public void setPublisherCompany(String pc){
+        publisherCompany = pc;
+    }
+    
+    public void setPublisherAddress(String pa){
+        publisherAddress = pa;
     }
     
     @Override

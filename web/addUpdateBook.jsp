@@ -21,8 +21,10 @@
                 <p>Author</p>
                 <span>First Name</span><input name="firstName" type="text" />         
                 <span>Last Name</span><input name="lastName" type="text" />  
-                <span>Publisher</span><input name="f" type="text" />           
-                <span>Cover</span><input name="cover" type="text" />
+                <p>Publisher</p>
+                <span>Publisher company</span><input name="company" type="text" />       
+                <span>Publisher address</span><input name="address" type="text" />           
+                <span>Cover</span><input type="file" name="photo"/>
             <input type="submit" name="addBtn" value="Add book" />
             <input type="submit" name="updateBtn" value="Update book" />
         </form>   

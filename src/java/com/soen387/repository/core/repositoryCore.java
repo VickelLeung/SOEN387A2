@@ -5,12 +5,17 @@
  */
 package com.soen387.repository.core;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -41,19 +46,17 @@ public class repositoryCore {
      public repositoryCore(){}
     
      public repositoryCore(String title, String desciption, String isbn, String firstName, String lastName){
-//         Book b = new Book(title, description, isbn, firstName, lastName);
          
      }
      
     
  public String listAllBooks() throws ClassNotFoundException, SQLException{
          
-        String bookList="";  
+        String bookList="<form action=\"deleteBook\" method=\"Post\">";  
         Connection myCon = null;
         Statement myStm = null;
         ResultSet myRs = null;
       
-           
         Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
@@ -64,60 +67,85 @@ public class repositoryCore {
             while(myRs.next()){
          
             bookList+= "<tr bgcolor='#E0FFFF'>";
-
+            bookList += "<td>"+myRs.getString("picture")+"</td>";
             bookList += "<td>"+myRs.getString("title")+"</td>";
             bookList += "<td>"+myRs.getString("ISBN")+"</td>";
             bookList += "<td>"+myRs.getString("description")+"</td>";
             bookList += "<td>"+myRs.getString("firstName")+"</td>";
             bookList += "<td>"+myRs.getString("lastName")+"</td>";
-            bookList += "<td>"+myRs.getString("publisher")+"</td>";
+            bookList += "<td>"+myRs.getString("publisher_company")+"</td>";
+             bookList += "<td>"+myRs.getString("publisher_address")+"</td>";
+            bookList += "<input type=\"hidden\" name=\"hdnbt\" value=\""+ myRs.getString("id")  +"\"/>";
+            bookList += "<td><input type=\"submit\" name=\"deleteBtn\" value=\"delete\"></td>";
             bookList+= "</tr>";
             }
-        
-        myRs.close();
+        bookList+="</form>";
+        myRs.close();   
         
    return bookList;
  }   
  
  //return id of book to get info
- public String getBookInfo(int id){
+   public HashMap getBookId(int id) throws SQLException, ClassNotFoundException{
      
-        Connection myCon = null;
-        Statement myStm = null;
-        ResultSet myRs = null;
-         
-        String val  = "";
-      try {
+            Connection myCon = null;
+            Statement myStm = null;
+             ResultSet rs = null;
+           
+            
+         Class.forName("com.mysql.jdbc.Driver");
+            myCon = DriverManager.getConnection(dbURL, user, pw);
+            myStm = myCon.createStatement();
+            // constructs SQL statement
+            String sql = "SELECT * FROM Book WHERE id = \'" + id +"\'";
+            PreparedStatement statement = myCon.prepareStatement(sql);
+            rs = statement.executeQuery(sql);
+        
+            HashMap row = new HashMap(1);
+            if(rs.next()){
+            row.put(1, rs.getString("picture"));
+            row.put(2, rs.getString("title"));
+            row.put(3, rs.getString("ISBN"));
+            row.put(4, rs.getString("description"));
+            row.put(5, rs.getString("firstName"));
+            row.put(6, rs.getString("lastName"));
+            row.put(7, rs.getString("publisher_Company"));
+            row.put(8, rs.getString("publisher_address"));
+            }
 
-        myCon = DriverManager.getConnection(dbURL, user, pw);
-        myStm = myCon.createStatement();
-          
-     //         insert = myStm.executeQuery("  INSERT INTO book (title, description, ISBN, author, publisher)\n" + values);
-            myRs = myStm.executeQuery("select * from book");
-             while(myRs.next()){
-            System.out.println(myRs.getString("title"));
-            System.out.println(myRs.getString("ISBN"));
-            val += myRs.getString("title");
-            val += myRs.getString("ISBN");
-        }
-        
-        myRs.close();
-        
-       
-        
-        } catch(SQLException e) {
-        for (Throwable t : e)
-        t.printStackTrace();
-        }
-        
-     return val;
-//     return 0;
+     return row;
+ 
  }
  
  
- public String getBookInfo(String isbn){
+ public HashMap getBookInfo(String isbn) throws SQLException, ClassNotFoundException{
      
-     return "";
+            Connection myCon = null;
+            Statement myStm = null;
+             ResultSet rs = null;
+           
+            
+         Class.forName("com.mysql.jdbc.Driver");
+            myCon = DriverManager.getConnection(dbURL, user, pw);
+            myStm = myCon.createStatement();
+            // constructs SQL statement
+            String sql = "SELECT * FROM Book WHERE ISBN = \'" + isbn +"\'";
+            PreparedStatement statement = myCon.prepareStatement(sql);
+            rs = statement.executeQuery(sql);
+        
+            HashMap row = new HashMap(1);
+            if(rs.next()){
+            row.put(1, rs.getString("picture"));
+            row.put(2, rs.getString("title"));
+            row.put(3, rs.getString("ISBN"));
+            row.put(4, rs.getString("description"));
+            row.put(5, rs.getString("firstName"));
+            row.put(6, rs.getString("lastName"));
+            row.put(7, rs.getString("publisher_Company"));
+            row.put(8, rs.getString("publisher_address"));
+            }
+
+     return row;
  }
     
 public int addNewBook(Book bookInfo) throws ClassNotFoundException{
@@ -133,16 +161,29 @@ public int addNewBook(Book bookInfo) throws ClassNotFoundException{
         String getIsbn = bookInfo.getIsbn();
         String firstName = bookInfo.getFirstName();
         String lastName = bookInfo.getLastName();
-        
-//        System.out.println("t:" + getTitle + " desc:" + getDescription + " isb:" + getIsbn);
+        String publisherCompany = bookInfo.getPublisherCompany();
+        String publisherAddress = bookInfo.getPublisherAddress();
  
+        System.out.println("t:" + getTitle + " d:" + getDescription + " fn: " + firstName + " ln:" + lastName +" p: " + publisherCompany + " pa: " + publisherAddress);
+        
       try {
         Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
         
-        values ="VALUES('"+getTitle+"','"+getDescription+"','"+getIsbn+"','"+ firstName +"','"+ lastName +"','actions');";
-        myStm.executeUpdate("INSERT INTO book (title, description, ISBN, firstName, lastName, publisher)" + values);
+         String sql = "INSERT INTO book (title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
+            PreparedStatement statement = myCon.prepareStatement(sql);
+           statement.setString(1, getTitle);
+           statement.setString(2,getDescription);
+           statement.setString(3, getIsbn);
+           statement.setString(4, firstName);
+           statement.setString(5, lastName);
+           statement.setString(6, "a picture");
+           statement.setString(7, publisherCompany);
+           statement.setString(8, publisherAddress);
+           
+           statement.execute();
+           
         myStm.close();
         
         //book added
@@ -169,11 +210,16 @@ public void updateBookInfo(int id, Book b) throws ClassNotFoundException{
         String getIsbn = b.getIsbn();
         String firstName = b.getFirstName();
         String lastName = b.getLastName();
-        
-        System.out.println("t :" + getTitle + " desc: " + getDescription);
-        
-        myStm.executeUpdate("UPDATE book SET title = "+ "\"" +getTitle + "\"" + " SET description =" + "\"" +getDescription + "\"" + " SET firstName = "+ "\"" +firstName 
-                + "\"" + " SET lastName = " + "\""  +lastName + "\"" + "WHERE ISBN =" +"\"" +getIsbn +"\"");
+
+         String sql = "UPDATE book SET title = ? SET description = ? SET firstName = ? SET lastName = ? WHERE ISBN = ?";
+            PreparedStatement statement = myCon.prepareStatement(sql);
+            statement.setString(1, getTitle);
+            statement.setString(2, getDescription);
+            statement.setString(3, firstName);
+            statement.setString(4, lastName);
+            statement.setString(5, getIsbn);
+            statement.execute();
+           
         myStm.close();
         } catch(SQLException e) {
         for (Throwable t : e)
@@ -181,17 +227,100 @@ public void updateBookInfo(int id, Book b) throws ClassNotFoundException{
         }
 }
 
-public void setImage(){
+public void setImage(Part filePart, String isbn) throws SQLException, IOException{
+      // gets values of text fields
+        
+         
+        InputStream inputStream = null; // input stream of the upload file
+         
+      
+        if (filePart != null) {
+            // prints out some information for debugging
+            System.out.println(filePart.getName());
+            System.out.println(filePart.getSize());
+            System.out.println(filePart.getContentType());
+             
+            // obtains input stream of the upload file
+            inputStream = filePart.getInputStream();
+        }
+         
+        
+            Connection myCon = null;
+            Statement myStm = null;
+        
+            // constructs SQL statement
+            String sql = "UPDATE book SET picture = ? WHERE ISBN = " + "\""+ isbn +"\"";
+            PreparedStatement statement = myCon.prepareStatement(sql);
+            
+            if (inputStream != null) {
+                // fetches input stream of the upload file for the blob column
+                statement.setBlob(1, inputStream);
+            }
+          
+}
+
+public void deleteBook(int id) throws ClassNotFoundException{
+    
+        Connection myCon = null;
+        Statement myStm = null;
+      
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
+        myCon = DriverManager.getConnection(dbURL, user, pw);
+        myStm = myCon.createStatement();
+        
+        myStm.executeUpdate("DELETE FROM book WHERE id =" + "\"" +id +"\"" );
+        myStm.close();
+        } catch(SQLException e) {
+        for (Throwable t : e)
+        t.printStackTrace();
+        }
     
 }
 
-public void deleteBook(int id){
-    
+
+public void deleteAllBooks() throws ClassNotFoundException{
+       
+        Connection myCon = null;
+        Statement myStm = null;
+        
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
+        myCon = DriverManager.getConnection(dbURL, user, pw);
+        myStm = myCon.createStatement();
+        
+         String sql = "DELETE FROM book;";
+            PreparedStatement statement = myCon.prepareStatement(sql); 
+           statement.execute();
+           
+        myStm.close();
+        
+        } catch(SQLException e) {
+        for (Throwable t : e)
+        t.printStackTrace();
+        }     
 }
 
-public void deleteAllBooks(){
+public int getBookId(String isbn) throws ClassNotFoundException{
+        Connection myCon = null;
+        Statement myStm = null;
+      int id = 0;
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
+        myCon = DriverManager.getConnection(dbURL, user, pw);
+        myStm = myCon.createStatement();
+        
+        myStm.executeUpdate("DELETE FROM book;" );
+        myStm.close();
+        } catch(SQLException e) {
+        for (Throwable t : e)
+        t.printStackTrace();
+        }
+      
+      return id;
 }
 
+  
 }
 
 

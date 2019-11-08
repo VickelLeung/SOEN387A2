@@ -14,19 +14,39 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="css/login.css" rel="stylesheet" type="text/css" />
+        <link href="css/index.css" rel="stylesheet" type="text/css" />
         <title>index</title>
     </head>
     <body>
         <h1>SOEN 387 - Book Repository</h1>
-          
-        <div id="loginContainer">
+           <a href="logout.jsp" >Logout</a>
+        <div class="home">
              <h3>Homepage</h3>
             
              <a href="addUpdateBook.jsp" > Add/Update Book</a>
-             <a href="deleteBook.jsp" >Delete Book</a>
-             <a href="getBook.jsp" >Search Book</a>
-             <a href="logout.jsp" >Logout</a>
+             
+             <a href="getBookPage.jsp" >Search Book</a>
+             <!-- Trigger/Open The Modal -->
+            <button id="myBtn">Delete all books</button>
+
+            
+             <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+              <!-- Modal content -->
+              <div class="modal-content">
+                <!--<span >&times;</span>-->
+                <p>Are you sure you want to delete all books?</p>
+                <div class="btnContainer">
+                    
+                        <form action="${pageContext.request.contextPath}/deleteBook" method="POST">
+                         <span><input type="submit" class="succeed" name="deleteAllBtn" value="delete All Book"> </span>
+                        </form>
+                    <button class="close">Cancel</button>
+                </div>
+              </div>
+            </div>
+
              
               <h2 align="center"><font><strong>Retrieve data from database in book</strong></font></h2>
             <table align="center" cellpadding="5" cellspacing="5" border="1">
@@ -34,25 +54,54 @@
 
             </tr>
             <tr bgcolor="#87CEFA">
-            <td><b>title</b></td>
+            <td><b>Cover</b></td>
+            <td><b>Title</b></td>
             <td><b>ISBN</b></td>
             <td><b>Description</b></td>
-            <td><b>First Name</b></td>
-             <td><b>Last Name</b></td>
-            <td><b>Publisher</b></td>
+             <td><b>First Name</b></td>
+            <td><b>Last Name</b></td>          
+            <td><b>Publisher Company</b></td>
+            <td><b>Publisher address</b></td>
             </tr>
             <%
                  repositoryCore repo = new repositoryCore();
                 String display = repo.listAllBooks();
             %>
             <tr bgcolor="#E0FFFF">
-
-            <td><%= display %></td>
- 
+            
+            <%= display %>
+                
             </tr>
-           
+
             </table>             
         </div>
-                 
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+    modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+    modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
+    }
+</script>      
     </body>
+    
 </html>

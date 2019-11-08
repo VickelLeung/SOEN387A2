@@ -4,9 +4,17 @@
         <servlet-name>addUpdateBook</servlet-name>
         <servlet-class>servlets.addUpdateBook</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>findBook</servlet-name>
+        <servlet-class>servlets.findBook</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>addUpdateBook</servlet-name>
         <url-pattern>/addUpdateBook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>findBook</servlet-name>
+        <url-pattern>/findBook</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

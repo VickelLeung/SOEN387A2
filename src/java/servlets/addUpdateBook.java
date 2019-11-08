@@ -7,15 +7,19 @@ package servlets;
 
 import com.soen387.repository.core.Author;
 import com.soen387.repository.core.Book;
+import com.soen387.repository.core.CoverImage;
 import com.soen387.repository.core.repositoryCore;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -37,31 +41,7 @@ public class addUpdateBook extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Add Update Book</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet addUpdateBook at " + request.getContextPath() + "</h1>");
-//            
-////            out.println(" ");
-//            out.println("<form action=\"${pageContext.request.contextPath}/myservlet\" method=\"post\"> ");
-//            out.println("<input type=\"submit\" name=\"addBtn\" value=\"addBtn\" /> ");
-//            out.println("<input type=\"submit\" name=\"button2\" value=\"Button 2\" /> ");   
-//            out.println("</form> ");
-//                  
-//            
-//            out.println("</body>");
-//            out.println("</html>");
-            
-//                
-//            <form action="${pageContext.request.contextPath}/myservlet" method="post">
-//    <input type="submit" name="button1" value="Button 1" />
-//    <input type="submit" name="button2" value="Button 2" />
-//    <input type="submit" name="button3" value="Button 3" />
-//</form>
+
         } finally {
             out.close();
         }
@@ -79,24 +59,25 @@ public class addUpdateBook extends HttpServlet {
         String isbn = request.getParameter("isbn");
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
-        String publisher = request.getParameter("publisher");
-        String cover = request.getParameter("cover");
-           
+        String publisherCompany = request.getParameter("company");
+        String publisherAddress = request.getParameter("address");
+
+        
+        InputStream inputStream = null; // input stream of the upload file
+         
+        // obtains the upload file part in this multipart request
+        Part filePart = request.getPart("photo");  
+        System.out.print("file :  " +filePart);
         repositoryCore repo = new repositoryCore();
         
-//         public Book(String isbn, String title, String description, String firstName, String lastName){
-////         isbn = this.id;
-//        Author a = new Author(firstName, lastName);
-//        title = this.title;
-//        description = this.description;
-//    }
         Author a1 = new Author(firstName, lastName);
-        Book b1 = new Book(isbn, title, description, a1);
+        Book b1 = new Book(isbn, title, description, a1, publisherCompany ,publisherAddress);
         
         if(!"".equals(isbn) && !"".equals(title) && !"".equals(description) ){
             if (request.getParameter("addBtn") != null) {
                   try {
                       repo.addNewBook(b1);
+//                     repo.setImage(filePart, isbn);
                   } catch (ClassNotFoundException ex) {
                       Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
                   }
@@ -116,20 +97,6 @@ public class addUpdateBook extends HttpServlet {
         out.println("Title: " + title + "\nisbn: " + isbn + "\ndescription: " + description + " ");
             
        response.sendRedirect(response.encodeRedirectURL("http://localhost:8080/SOEN387A2/"));
-//           out.println("Error, the book was not added.");
-        
-//            else if (request.getParameter("button2") != null) {
-//            myClass.method2();
-//        } else if (request.getParameter("button3") != null) {
-//            myClass.method3();
-//        } else {
-//            // ???
-//        }
-
-//        request.getRequestDispatcher("/WEB-INF/some-result.jsp").forward(request, response);
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
