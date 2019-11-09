@@ -43,11 +43,13 @@ public class repositoryCore {
   
      }
      
-     public repositoryCore(){}
+    static repositoryCore obj = new repositoryCore();
     
-     public repositoryCore(String title, String desciption, String isbn, String firstName, String lastName){
-         
-     }
+    private repositoryCore(){}
+    
+    public static repositoryCore getInstance(){
+        return obj;
+    }
      
     
  public String listAllBooks() throws ClassNotFoundException, SQLException{

@@ -64,7 +64,7 @@
             <td><b>Publisher address</b></td>
             </tr>
             <%
-                 repositoryCore repo = new repositoryCore();
+                 repositoryCore repo = repositoryCore.getInstance();
                 String display = repo.listAllBooks();
             %>
             <tr bgcolor="#E0FFFF">

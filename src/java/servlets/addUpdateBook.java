@@ -68,7 +68,7 @@ public class addUpdateBook extends HttpServlet {
         // obtains the upload file part in this multipart request
         Part filePart = request.getPart("photo");  
         System.out.print("file :  " +filePart);
-        repositoryCore repo = new repositoryCore();
+        repositoryCore repo = repositoryCore.getInstance();
         
         Author a1 = new Author(firstName, lastName);
         Book b1 = new Book(isbn, title, description, a1, publisherCompany ,publisherAddress);

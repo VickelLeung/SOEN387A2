@@ -90,7 +90,7 @@ public class findBook extends HttpServlet {
         int idNum = Integer.parseInt(id);
         
         HashMap bookInfo = new HashMap();
-        repositoryCore repo = new repositoryCore();
+        repositoryCore repo = repositoryCore.getInstance();
         PrintWriter out = response.getWriter();
             if (request.getParameter("idBtn") != null) {
             try {

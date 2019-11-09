@@ -5,13 +5,10 @@
  */
 package servlets;
 
-import com.soen387.repository.core.repositoryCore;
+import com.soen387.repository.core.session;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Vicke
  */
-@WebServlet(name = "deleteBook", urlPatterns = {"/deleteBook"})
-public class deleteBook extends HttpServlet {
+public class login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +37,10 @@ public class deleteBook extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet deleteBook</title>");            
+            out.println("<title>Servlet login</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet deleteBook at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -78,36 +74,16 @@ public class deleteBook extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       
+        session ses = new session();
         
-//        processRequest(request, response);
-    
-    repositoryCore repo = repositoryCore.getInstance();
-//    int id = request.getParameter(null);
-//    int id = 0;
-//    String ids = request.getParameter("hdnbt");
-//    
-//    id = Integer.parseInt(ids);	
-//    
-//      if (request.getParameter("deleteBtn") != null) {
-//        try {
-            
-//            repo.deleteBook(id);
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(deleteBook.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//      }
-   
-      if (request.getParameter("deleteAllBtn") != null) {
-        try {
-            repo.deleteAllBooks();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(deleteBook.class.getName()).log(Level.SEVERE, null, ex);
+//        ses.login(userId, null);
+        
+        if(ses.isUserLoggedIn()){
+         response.sendRedirect("index.jsp");
         }
-      }
-        
-        response.sendRedirect(response.encodeRedirectURL("http://localhost:8080/SOEN387A2/"));
-
-    
+        else{
+            response.sendRedirect("login.jsp");
+        }
     }
-
 }
