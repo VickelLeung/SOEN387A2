@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -54,6 +55,7 @@ public class addUpdateBook extends HttpServlet {
           response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
             
+    
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String isbn = request.getParameter("isbn");
@@ -70,9 +72,10 @@ public class addUpdateBook extends HttpServlet {
         System.out.print("file :  " +filePart);
         repositoryCore repo = repositoryCore.getInstance();
         
+        CoverImage c = new CoverImage("image", filePart);
         Author a1 = new Author(firstName, lastName);
-        Book b1 = new Book(isbn, title, description, a1, publisherCompany ,publisherAddress);
-        
+        Book b1 = new Book(isbn, title, description, a1, c, publisherCompany ,publisherAddress);
+        out.println("Sucessfully addeed to respository for book.\n" + filePart);
         if(!"".equals(isbn) && !"".equals(title) && !"".equals(description) ){
             if (request.getParameter("addBtn") != null) {
                   try {
@@ -93,10 +96,10 @@ public class addUpdateBook extends HttpServlet {
             }
         }
             
-        out.println("Sucessfully addeed to respository for book.\n");
+//        out.println("Sucessfully addeed to respository for book.\n");
         out.println("Title: " + title + "\nisbn: " + isbn + "\ndescription: " + description + " ");
             
-       response.sendRedirect(response.encodeRedirectURL("http://localhost:8080/SOEN387A2/"));
+//       response.sendRedirect(response.encodeRedirectURL("http://localhost:8080/SOEN387A2/"));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

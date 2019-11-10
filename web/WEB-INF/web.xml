@@ -8,6 +8,10 @@
         <servlet-name>findBook</servlet-name>
         <servlet-class>servlets.findBook</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>uploadCoverImage</servlet-name>
+        <servlet-class>com.soen387.repository.core.uploadCoverImage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>addUpdateBook</servlet-name>
         <url-pattern>/addUpdateBook</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>findBook</servlet-name>
         <url-pattern>/findBook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>uploadCoverImage</servlet-name>
+        <url-pattern>/uploadCoverImage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

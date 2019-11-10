@@ -24,7 +24,7 @@
                 <p>Publisher</p>
                 <span>Publisher company</span><input name="company" type="text" />       
                 <span>Publisher address</span><input name="address" type="text" />           
-                <span>Cover</span><input type="file" name="photo"/>
+                <!--<span>Cover</span><input type="file" name="photo"/>-->
             <input type="submit" name="addBtn" value="Add book" />
             <input type="submit" name="updateBtn" value="Update book" />
         </form>   

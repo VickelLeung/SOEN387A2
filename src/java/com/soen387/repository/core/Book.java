@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -29,6 +30,7 @@ public class Book implements Serializable {
     private static String lastName;
     private static String publisherCompany;
     private static String publisherAddress;
+    private static Part data;
   
     public Book(){
 
@@ -37,11 +39,13 @@ public class Book implements Serializable {
         description = null;
     }
     
-    public Book(String is, String t, String desc , Author a, String pc, String pa){
+    public Book(String is, String t, String desc , Author a, CoverImage c, String pc, String pa){
         
         
         setFirstName(a.getFirstName());
         setLastName(a.getLastName());
+        setData(c.getData());
+        
         title = t;
         description = desc;
         isbn = is;
@@ -97,10 +101,14 @@ public class Book implements Serializable {
         return publisherAddress;
     }
     
-    public void setFirstName(String fn){
+    public Part getPicture(){
+        return data;
+    }
+    
+    public static void setFirstName(String fn){
         firstName = fn;
     }
-    public void setLastName(String ln){
+    public static void setLastName(String ln){
         lastName = ln;
     }
     
@@ -110,6 +118,10 @@ public class Book implements Serializable {
     
     public void setPublisherAddress(String pa){
         publisherAddress = pa;
+    }
+    
+    public static void setData(Part d){
+        data = d;
     }
     
     @Override

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -18,14 +19,38 @@ import javax.persistence.Id;
 @Entity
 public class CoverImage implements Serializable {
     private static final long serialVersionUID = 1L;
+    private String imgType;
+    private Part imgData;
+    
+    public CoverImage(String type, Part data){
+        imgType = type;
+        imgData = data;
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    public String getType(){
+        return imgType;
+    }
+    
+    public Part getData(){
+        return imgData;
+    }
+        
     public Long getId() {
         return id;
     }
 
+    public void setType(String t){
+        imgType = t;
+    }
+    
+    public void setData(Part t){
+        imgData = t;
+    }
+    
     public void setId(Long id) {
         this.id = id;
     }

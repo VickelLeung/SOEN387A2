@@ -54,7 +54,7 @@ public class repositoryCore {
     
  public String listAllBooks() throws ClassNotFoundException, SQLException{
          
-        String bookList="<form action=\"deleteBook\" method=\"Post\">";  
+        String bookList="";  
         Connection myCon = null;
         Statement myStm = null;
         ResultSet myRs = null;
@@ -69,19 +69,24 @@ public class repositoryCore {
             while(myRs.next()){
          
             bookList+= "<tr bgcolor='#E0FFFF'>";
-            bookList += "<td>"+myRs.getString("picture")+"</td>";
+            bookList += "<td>"+myRs.getString("picture")+
+                    "<form enctype=\"multipart/form-data\" action=\"${pageContext.request.contextPath}/uploadCoverImage\" method=\"POST\">"
+                    + "<input type=\"file\" value=\"Add a cover picture\"><input type=\"submit\" name=\"uploadBtn\" value=\"upload cover\" /></form>"
+                    + "</td>";
             bookList += "<td>"+myRs.getString("title")+"</td>";
             bookList += "<td>"+myRs.getString("ISBN")+"</td>";
             bookList += "<td>"+myRs.getString("description")+"</td>";
             bookList += "<td>"+myRs.getString("firstName")+"</td>";
             bookList += "<td>"+myRs.getString("lastName")+"</td>";
             bookList += "<td>"+myRs.getString("publisher_company")+"</td>";
-             bookList += "<td>"+myRs.getString("publisher_address")+"</td>";
+            bookList += "<td>"+myRs.getString("publisher_address")+"</td>";
+            bookList +="<form action=\"deleteBook\" method=\"Post\">";
             bookList += "<input type=\"hidden\" name=\"hdnbt\" value=\""+ myRs.getString("id")  +"\"/>";
             bookList += "<td><input type=\"submit\" name=\"deleteBtn\" value=\"delete\"></td>";
+            bookList+="</form>";
             bookList+= "</tr>";
             }
-        bookList+="</form>";
+       
         myRs.close();   
         
    return bookList;
@@ -125,7 +130,6 @@ public class repositoryCore {
             Connection myCon = null;
             Statement myStm = null;
              ResultSet rs = null;
-           
             
          Class.forName("com.mysql.jdbc.Driver");
             myCon = DriverManager.getConnection(dbURL, user, pw);
@@ -150,7 +154,7 @@ public class repositoryCore {
      return row;
  }
     
-public int addNewBook(Book bookInfo) throws ClassNotFoundException{
+public int addNewBook(Book bookInfo) throws ClassNotFoundException, IOException{
         int ok = 0;
         
         Connection myCon = null;
@@ -165,28 +169,33 @@ public int addNewBook(Book bookInfo) throws ClassNotFoundException{
         String lastName = bookInfo.getLastName();
         String publisherCompany = bookInfo.getPublisherCompany();
         String publisherAddress = bookInfo.getPublisherAddress();
- 
+        Part img = bookInfo.getPicture();
+        
         System.out.println("t:" + getTitle + " d:" + getDescription + " fn: " + firstName + " ln:" + lastName +" p: " + publisherCompany + " pa: " + publisherAddress);
+        System.out.println("img: " + img);
         
       try {
         Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
         
-         String sql = "INSERT INTO book (title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
+        String sql = "INSERT INTO book (title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
             PreparedStatement statement = myCon.prepareStatement(sql);
            statement.setString(1, getTitle);
            statement.setString(2,getDescription);
            statement.setString(3, getIsbn);
            statement.setString(4, firstName);
            statement.setString(5, lastName);
-           statement.setString(6, "a picture");
+           statement.setBinaryStream(6, img.getInputStream(), (int)  img.getSize());
+//           statement.setString(6, "a picture");
            statement.setString(7, publisherCompany);
            statement.setString(8, publisherAddress);
            
            statement.execute();
-           
+        
+        myCon.commit();
         myStm.close();
+        myCon.close();
         
         //book added
         ok = 1;

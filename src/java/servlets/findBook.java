@@ -84,7 +84,7 @@ public class findBook extends HttpServlet {
             throws ServletException, IOException {
       
           
-        String id = request.getParameter("idBtn");
+        String id =  request.getParameter("idBtn");
         String isbn = request.getParameter("isbnBtn");
         
         int idNum = Integer.parseInt(id);
