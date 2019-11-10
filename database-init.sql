@@ -16,7 +16,7 @@ Create Table Book(
   );
   
 --   add BLOB into book table
-  ALTER TABLE BOOK ADD COLUMN picture longblob,;
+  ALTER TABLE BOOK ADD COLUMN picture longblob;
   
 -- INSERT example
  INSERT INTO book (title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) 
