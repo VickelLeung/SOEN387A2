@@ -5,15 +5,23 @@
  */
 package com.soen387.repository.core;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
+
 
 /**
  *
  * @author Vicke
  */
-public class session {
+public class Session {
     
     
     public String getCurrentUser(){
@@ -26,30 +34,40 @@ public class session {
         return false;
     }
     
-    public void login(int userId, String password){
+    public boolean login(String username, String password){
+        JSONParser jsonParser = new JSONParser();
         
+        try (FileReader reader = new FileReader("C:\\Users\\zheng\\Desktop\\SOEN387A2\\src\\java\\authentication\\userCredentials.json"))
+        {
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);
+ 
+            JSONArray credentials = (JSONArray) obj;
+            System.out.println(credentials);
+             
+            JSONObject jo;
+            //Iterate over employee array
+            for(Object o : credentials){
+                jo = (JSONObject) o;
+                
+                if (username.equals(jo.get("username")) && password.equals(jo.get("pass")))
+                    return true;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
     }
     
     public void logout(){
         
     }
-    
-    /**
-     * Connect to the test.db database
-     *
-     * @return the Connection object
-     */
-//    private Connection connect() {
-//        // SQLite connection string
-//        String url = "jdbc:sqlite:C://sqlite/db/test.db";
-//        Connection conn = null;
-//        try {
-//            conn = DriverManager.getConnection(url);
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
-//        return conn;
-//    }
+
     
     
 }
