@@ -33,19 +33,34 @@
              <!-- The Modal -->
             <div id="myModal" class="modal">
 
-              <!-- Modal content -->
+              <!-- Delete all Modal content -->
               <div class="modal-content">
-                <!--<span >&times;</span>-->
+             
                 <p>Are you sure you want to delete all books?</p>
-                <div class="btnContainer">
-                    
-                        <form action="${pageContext.request.contextPath}/deleteBook" method="POST">
-                         <span><input type="submit" class="succeed" name="deleteAllBtn" value="delete All Book"> </span>
-                        </form>
+                <div class="btnContainer">   
+                    <form action="${pageContext.request.contextPath}/deleteBook" method="POST">
+                     <span><input type="submit" class="succeed" name="deleteAllBtn" value="delete All Book"> </span>
+                    </form>
                     <button class="close">Cancel</button>
                 </div>
               </div>
             </div>
+                
+<!--             The Modal 
+            <div id="myModal" class="modal">
+
+               Delete  Modal content 
+              <div class="modal-content">
+                <p>Are you sure you want to delete?</p>
+                <div class="btnContainer">   
+                    <form action="${pageContext.request.contextPath}/deleteBook" method="POST">
+                     <span><input type="submit" class="succeed" name="deleteAllBtn" value="delete All Book"> </span>
+                    </form>
+                    <button class="close">Cancel</button>
+                </div>
+              </div>
+            </div>       -->
+                     
 
              
               <h2 align="center"><font><strong>Retrieve data from database in book</strong></font></h2>
@@ -89,7 +104,7 @@
     btn.onclick = function() {
     modal.style.display = "block";
     }
-
+    
     // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
     modal.style.display = "none";

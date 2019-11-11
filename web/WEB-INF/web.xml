@@ -24,6 +24,14 @@
         <servlet-name>uploadCoverImage</servlet-name>
         <url-pattern>/uploadCoverImage</url-pattern>
     </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>imageServlet</servlet-name>
+        <url-pattern>/imageServlet</url-pattern>
+    </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404page.html</location>
+    </error-page>
     <session-config>
         <session-timeout>
             30

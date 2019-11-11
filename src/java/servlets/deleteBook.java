@@ -82,15 +82,13 @@ public class deleteBook extends HttpServlet {
 //        processRequest(request, response);
     
     repositoryCore repo = repositoryCore.getInstance();
-//    int id = request.getParameter(null);
-    int id = 0;
-    String ids = request.getParameter("hdnbt");
-    
-    id = Integer.parseInt(ids);	
+
     
       if (request.getParameter("deleteBtn") != null) {
         try {
-            
+            int id = 0;
+            String ids = request.getParameter("hdnbt");
+            id = Integer.parseInt(ids);	
             repo.deleteBook(id);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(deleteBook.class.getName()).log(Level.SEVERE, null, ex);

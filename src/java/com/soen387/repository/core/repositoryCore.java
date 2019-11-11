@@ -5,8 +5,11 @@
  */
 package com.soen387.repository.core;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,16 +35,12 @@ public class repositoryCore {
     private static String author;
     private static String publisher;
     private static String cover;
+   
     
      private static final String user = "soen387a2";
      private static final String pw = "Lr00IQ5T~!Ma";
      private static final String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
     
-     public static void main(String[] args){
-         
-         //setup the connection
-  
-     }
      
     static repositoryCore obj = new repositoryCore();
     
@@ -64,15 +63,19 @@ public class repositoryCore {
         myStm = myCon.createStatement();
             
            String sql ="SELECT * FROM book";
-
+            PreparedStatement statement = myCon.prepareStatement(sql);
+           
             myRs = myStm.executeQuery(sql);
             while(myRs.next()){
          
             bookList+= "<tr bgcolor='#E0FFFF'>";
-            bookList += "<td>"+myRs.getString("picture")+
-                    "<form enctype=\"multipart/form-data\" action=\"${pageContext.request.contextPath}/uploadCoverImage\" method=\"POST\">"
-                    + "<input type=\"file\" value=\"Add a cover picture\"><input type=\"submit\" name=\"uploadBtn\" value=\"upload cover\" /></form>"
-                    + "</td>";
+           
+            bookList += "<td><img width=\"250px\" height=\"300px\" src=\"imageServlet?id=" +myRs.getString("id")+ "\"/>"
+                    +" <form enctype=\"multipart/form-data\"  action=\"uploadCoverImage\" method=\"POST\">"
+                    + "<input type=\"hidden\" name=\"test\" value=\""+ myRs.getString("id")+"\"/>"
+                    + "<input type=\"file\" name=\"photo\" value=\"Add a cover picture\">"
+                    + "<input type=\"submit\" name=\"uploadBtn\" value=\"upload cover\" />"
+                    + "</form></td>";
             bookList += "<td>"+myRs.getString("title")+"</td>";
             bookList += "<td>"+myRs.getString("ISBN")+"</td>";
             bookList += "<td>"+myRs.getString("description")+"</td>";
@@ -81,7 +84,7 @@ public class repositoryCore {
             bookList += "<td>"+myRs.getString("publisher_company")+"</td>";
             bookList += "<td>"+myRs.getString("publisher_address")+"</td>";
             bookList +="<form action=\"deleteBook\" method=\"Post\">";
-            bookList += "<input type=\"hidden\" name=\"hdnbt\" value=\""+ myRs.getString("id")  +"\"/>";
+            bookList += "<input type=\"hidden\" name=\"hdnbt\" value=\""+ myRs.getString("id")+"\"/>";
             bookList += "<td><input type=\"submit\" name=\"deleteBtn\" value=\"delete\"></td>";
             bookList+="</form>";
             bookList+= "</tr>";
@@ -93,16 +96,16 @@ public class repositoryCore {
  }   
  
  //return id of book to get info
-   public HashMap getBookId(int id) throws SQLException, ClassNotFoundException{
+   public HashMap getBookInfo(int id) throws SQLException, ClassNotFoundException{
      
             Connection myCon = null;
-            Statement myStm = null;
+//            Statement myStm = null;
              ResultSet rs = null;
            
             
          Class.forName("com.mysql.jdbc.Driver");
             myCon = DriverManager.getConnection(dbURL, user, pw);
-            myStm = myCon.createStatement();
+//            myStm = myCon.createStatement();
             // constructs SQL statement
             String sql = "SELECT * FROM Book WHERE id = \'" + id +"\'";
             PreparedStatement statement = myCon.prepareStatement(sql);
@@ -127,15 +130,15 @@ public class repositoryCore {
  
  public HashMap getBookInfo(String isbn) throws SQLException, ClassNotFoundException{
      
-            Connection myCon = null;
-            Statement myStm = null;
+          Connection myCon = null;
+//            Statement myStm = null;
              ResultSet rs = null;
             
          Class.forName("com.mysql.jdbc.Driver");
             myCon = DriverManager.getConnection(dbURL, user, pw);
-            myStm = myCon.createStatement();
+//            myStm = myCon.createStatement();
             // constructs SQL statement
-            String sql = "SELECT * FROM Book WHERE ISBN = \'" + isbn +"\'";
+            String sql = "SELECT * FROM Book WHERE ISBN = \'"+ isbn +"\'";
             PreparedStatement statement = myCon.prepareStatement(sql);
             rs = statement.executeQuery(sql);
         
@@ -160,8 +163,7 @@ public int addNewBook(Book bookInfo) throws ClassNotFoundException, IOException{
         Connection myCon = null;
         Statement myStm = null;
 
-        String values = "";
-        
+        generateId();
         String getTitle = bookInfo.getTitle();
         String getDescription = bookInfo.getDescription();
         String getIsbn = bookInfo.getIsbn();
@@ -169,27 +171,28 @@ public int addNewBook(Book bookInfo) throws ClassNotFoundException, IOException{
         String lastName = bookInfo.getLastName();
         String publisherCompany = bookInfo.getPublisherCompany();
         String publisherAddress = bookInfo.getPublisherAddress();
-        Part img = bookInfo.getPicture();
+//        Part img = bookInfo.getPicture();
         
         System.out.println("t:" + getTitle + " d:" + getDescription + " fn: " + firstName + " ln:" + lastName +" p: " + publisherCompany + " pa: " + publisherAddress);
-        System.out.println("img: " + img);
+//        System.out.println("img: " + img);
         
       try {
         Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
         
-        String sql = "INSERT INTO book (title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
-            PreparedStatement statement = myCon.prepareStatement(sql);
-           statement.setString(1, getTitle);
-           statement.setString(2,getDescription);
-           statement.setString(3, getIsbn);
-           statement.setString(4, firstName);
-           statement.setString(5, lastName);
-           statement.setBinaryStream(6, img.getInputStream(), (int)  img.getSize());
-//           statement.setString(6, "a picture");
-           statement.setString(7, publisherCompany);
-           statement.setString(8, publisherAddress);
+        String sql = "INSERT INTO book (id ,title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+           PreparedStatement statement = myCon.prepareStatement(sql);
+           statement.setInt(1, id);
+           statement.setString(2, getTitle);
+           statement.setString(3,getDescription);
+           statement.setString(4, getIsbn);
+           statement.setString(5, firstName);
+           statement.setString(6, lastName);
+//           statement.setBinaryStream(7, img.getInputStream(), (int)  img.getSize());
+           statement.setString(7, "a picture");
+           statement.setString(8, publisherCompany);
+           statement.setString(9, publisherAddress);
            
            statement.execute();
         
@@ -238,36 +241,54 @@ public void updateBookInfo(int id, Book b) throws ClassNotFoundException{
         }
 }
 
-public void setImage(Part filePart, String isbn) throws SQLException, IOException{
-      // gets values of text fields
-        
-         
+public void setImage(Part filePart, int id) throws SQLException, IOException, ClassNotFoundException{
+        // gets values of text fields
+                
         InputStream inputStream = null; // input stream of the upload file
-         
+        Connection myCon = null;
+        Statement myStm = null;
       
         if (filePart != null) {
-            // prints out some information for debugging
-            System.out.println(filePart.getName());
-            System.out.println(filePart.getSize());
-            System.out.println(filePart.getContentType());
-             
-            // obtains input stream of the upload file
-            inputStream = filePart.getInputStream();
-        }
+//            // prints out some information for debugging
+//            System.out.println(filePart.getName());
+//            System.out.println(filePart.getSize());
+//            System.out.println(filePart.getContentType());
+//             
+//            // obtains input stream of the upload file
+//            inputStream = filePart.getInputStream();
+//        }
          
-        
-            Connection myCon = null;
-            Statement myStm = null;
-        
-            // constructs SQL statement
-            String sql = "UPDATE book SET picture = ? WHERE ISBN = " + "\""+ isbn +"\"";
-            PreparedStatement statement = myCon.prepareStatement(sql);
+            Class.forName("com.mysql.jdbc.Driver");
+            myCon = DriverManager.getConnection(dbURL, user, pw);
+            myStm = myCon.createStatement();
             
-            if (inputStream != null) {
-                // fetches input stream of the upload file for the blob column
-                statement.setBlob(1, inputStream);
+//            File fBlob = filePart;
+//            FileInputStream is = new FileInputStream ( fBlob );
+            InputStream is = null;
+            if(filePart != null){
+                String fileSize = filePart.getContentType();
+                is = filePart.getInputStream();
             }
-          
+            
+            // constructs SQL statement
+            String sql = "UPDATE book SET picture = ? WHERE id = " + "\""+ id +"\"";
+            PreparedStatement statement = myCon.prepareStatement(sql);
+                
+//            if (is != null) {
+//                 fetches input stream of the upload file for the blob column
+                statement.setBlob(1, is);
+//                statement.setBinaryStream(1, inputStream);
+//                statement.setBinaryStream (2, is, (int) fBlob.length() );
+                statement.execute();
+
+//            }          
+            
+            
+            
+//        pstmt.setBinaryStream (2, is, (int) fBlob.length() );
+//        pstmt.execute ();
+            
+        }    
 }
 
 public void deleteBook(int id) throws ClassNotFoundException{
@@ -286,7 +307,6 @@ public void deleteBook(int id) throws ClassNotFoundException{
         for (Throwable t : e)
         t.printStackTrace();
         }
-    
 }
 
 
@@ -312,26 +332,64 @@ public void deleteAllBooks() throws ClassNotFoundException{
         }     
 }
 
-public int getBookId(String isbn) throws ClassNotFoundException{
+public void generateId() throws ClassNotFoundException{
+    
+    int getCurrentId = getLastId();
+    
+    id = ++getCurrentId; 
+    
+}
+
+public int getLastId() throws ClassNotFoundException{
+    
+    int id = 0;
+
         Connection myCon = null;
         Statement myStm = null;
-      int id = 0;
+        ResultSet rs = null;
+        
       try {
         Class.forName("com.mysql.jdbc.Driver");
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
         
-        myStm.executeUpdate("DELETE FROM book;" );
+        String sql = "SELECT id FROM book ORDER BY id DESC LIMIT 1;";
+        PreparedStatement statement = myCon.prepareStatement(sql); 
+//       statement.execute();
+      rs = statement.executeQuery(sql);
+        
+      if(rs.next()){
+          id = rs.getInt("id");
+      }
+           
         myStm.close();
+        
         } catch(SQLException e) {
         for (Throwable t : e)
         t.printStackTrace();
-        }
+        }     
       
-      return id;
+      if(id == 0)
+          return id= 0;
+      
+    return id;
 }
 
-  
+
+public static void main(String[] args) throws ClassNotFoundException{
+    
+    repositoryCore re = new repositoryCore();
+    
+   int ids =  re.getLastId();
+   System.out.println(ids);
+   re.generateId();
+   System.out.println(id);
+   
+    
+   
 }
+
+}
+
 
 

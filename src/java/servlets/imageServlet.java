@@ -3,31 +3,40 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.soen387.repository.core;
+package servlets;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import servlets.addUpdateBook;
+
 
 /**
  *
  * @author Vicke
  */
-@WebServlet("/upload")
-@MultipartConfig
-public class uploadCoverImage extends HttpServlet {
+@WebServlet(name = "imageServlet", urlPatterns = {"/imageServlet"})
+public class imageServlet extends HttpServlet {
 
+    
+     private static final String user = "soen387a2";
+     private static final String pw = "Lr00IQ5T~!Ma";
+     private static final String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,10 +55,10 @@ public class uploadCoverImage extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet uploadCoverImage</title>");            
+            out.println("<title>Servlet imageServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet uploadCoverImage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet imageServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -69,7 +78,49 @@ public class uploadCoverImage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String getId = request.getParameter("id");
+       
+          Connection myCon = null;
+        Statement myStm = null;
+        ResultSet rs = null;
+        
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
+        myCon = DriverManager.getConnection(dbURL, user, pw);
+        myStm = myCon.createStatement();
+        if(getId !=null){
+        int id = Integer.parseInt(getId);
+       
+        String sql = "SELECT picture FROM book where id =" + id + ";";
+        PreparedStatement statement = myCon.prepareStatement(sql); 
+//       statement.execute();
+        rs = statement.executeQuery(sql);
+        
+      if(rs.next()){
+//          id = rs.getInt("id");
+           Blob b = rs.getBlob("picture");
+      
+//      
+        response.setContentType("image/jpeg");
+        response.setContentLength((int) b.length());
+        InputStream is = b.getBinaryStream();
+        OutputStream os = response.getOutputStream();
+        byte buf[] = new byte[(int) b.length()];
+        is.read(buf);
+        os.write(buf);
+        os.close();
+       }
+        myStm.close();
+    }
+        } catch(SQLException e) {
+        for (Throwable t : e)
+        t.printStackTrace();
+        } catch (ClassNotFoundException ex) {     
+             Logger.getLogger(imageServlet.class.getName()).log(Level.SEVERE, null, ex);
+         }     
+        
+        
     }
 
     /**
@@ -83,40 +134,17 @@ public class uploadCoverImage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                
-        int id = 1;
-        
-//        String ids = request.getParameter("test");
-        
-        
-        PrintWriter out = response.getWriter();
-        
-       
-//        if(ids != null){
-//        id = Integer.parseInt(ids);
-        
-//         out.write("id " + id);
-        Part photo = request.getPart("photo");
-        
-//          File fBlob = new File ( request.getParameter("photo") );
-//         out.write("id " + fBlob);
-            repositoryCore repo = repositoryCore.getInstance();
-        if(photo != null){
-            if (request.getParameter("uploadBtn") != null) {
-            try {
-                repo.setImage(photo, id);
-            } catch (SQLException ex) {
-                Logger.getLogger(uploadCoverImage.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(uploadCoverImage.class.getName()).log(Level.SEVERE, null, ex);
-            }
-           }
-                
-        }
-        
-        
+        processRequest(request, response);
     }
 
-   
-   
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
 }

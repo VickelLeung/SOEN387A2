@@ -65,7 +65,7 @@ public class addUpdateBook extends HttpServlet {
         String publisherAddress = request.getParameter("address");
 
         
-        InputStream inputStream = null; // input stream of the upload file
+//        InputStream inputStream = null; // input stream of the upload file
          
         // obtains the upload file part in this multipart request
         Part filePart = request.getPart("photo");  

@@ -82,35 +82,36 @@ public class findBook extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
-          
-        String id =  request.getParameter("idBtn");
+        PrintWriter out = response.getWriter();
+        
+        String getId =  request.getParameter("idBtn");
         String isbn = request.getParameter("isbnBtn");
         
-        int idNum = Integer.parseInt(id);
-        
+            int id = 0;
+            id = Integer.parseInt(getId);
+         
         HashMap bookInfo = new HashMap();
         repositoryCore repo = repositoryCore.getInstance();
-        PrintWriter out = response.getWriter();
+        
             if (request.getParameter("idBtn") != null) {
-            try {
-                bookInfo = repo.getBookId(idNum);
-            } catch (SQLException ex) {
-                Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
-            }
+                try {
+                    bookInfo = repo.getBookInfo(id);
+                } catch (SQLException ex) {
+                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
+                }
            
             }
             else if(request.getParameter("isbnBtn") != null){
-            try {
-                bookInfo = repo.getBookInfo(isbn);
-            } catch (SQLException ex) {
-                Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
-            }
-               
+                try {
+                    bookInfo = repo.getBookInfo(isbn);
+                   
+                } catch (SQLException ex) {
+                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
+                } 
             }
             
           String cover = bookInfo.get(1).toString();
@@ -138,8 +139,7 @@ public class findBook extends HttpServlet {
             out.write("<tr>");
             
             out.write("<tr>");
-//            out.write("<td>");
-            
+           
             out.write("<td>" + cover + "</td>");
             out.write("<td>" + title + "</td>");
             out.write("<td>" + ISBN + "</td>");
@@ -148,19 +148,10 @@ public class findBook extends HttpServlet {
             out.write("<td>" + lastName + "</td>");
             out.write("<td>" + company + "</td>");
             out.write("<td>" + address + "</td>");
-            
-//            out.write("</td>");
+
             out.write("</tr>");
             out.write("</table>");
-            
-//              out.write("<p>" + title +"</p>");
-//             out.write("<p>" + ISBN +"</p>");
-//              out.write("<p>" + description +"</p>");
-//          
+                     
         }
         
-        
-
-   
-
 }
