@@ -100,6 +100,10 @@ public class login extends HttpServlet {
                 hSession.setAttribute("user", user);
                 response.sendRedirect("/SOEN387A2/index.jsp");
             }
+            else{
+                // TODO: send error msg
+                response.sendRedirect("/SOEN387A2/login.jsp");
+            }
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
         }
