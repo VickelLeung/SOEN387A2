@@ -1,10 +1,7 @@
-show databases;
-
 use soen387a2;
 
-
 Create Table Book(
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT NOT NULL PRIMARY KEY,
   title VARCHAR(50),
   description VARCHAR(200),
   ISBN VARCHAR(20),
@@ -19,14 +16,14 @@ Create Table Book(
   ALTER TABLE BOOK ADD COLUMN picture longblob;
   
 -- INSERT example
- INSERT INTO book (title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) 
- VALUES ("The joker", "A scary book about clowns that will murder you.", "J4L 1M5", "Joaquin", "Phoenix", "", "TheGothan", "GothamCity");
+ INSERT INTO book (id ,title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) 
+ VALUES (1,"The joker", "A scary book about clowns that will murder you.", "J4L 1M5", "Joaquin", "Phoenix", "", "TheGothan", "GothamCity");
  
 --  Insert data dummy
- INSERT INTO book (title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) 
- VALUES ("The dark knight", "A knight that will try to help you do your task such as cleaning.", "L6M 2S8", "Good", "Knight", "", "TheKnight", "Medieval");
+ INSERT INTO book (id ,title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) 
+ VALUES (2,"The dark knight", "A knight that will try to help you do your task such as cleaning.", "L6M 2S8", "Good", "Knight", "", "TheKnight", "Medieval");
 
- INSERT INTO book (title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) 
- VALUES ("A funny book", "A book that will make you laught.", "H5K 2M1", "Will", "Smith", "", "BlackGuy", "HomieHood");
+ INSERT INTO book (id ,title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) 
+ VALUES (3,"A funny book", "A book that will make you laught.", "H5K 2M1", "Will", "Smith", "", "BlackGuy", "HomieHood");
 
 select * from book;
