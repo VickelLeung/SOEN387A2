@@ -5,13 +5,20 @@
  */
 package servlets;
 
-import com.soen387.repository.core.session;
+import com.soen387.repository.core.Session;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.MessageDigest; 
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.math.BigInteger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -75,15 +82,28 @@ public class login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
-        session ses = new session();
+        HttpSession hSession = request.getSession(true);
+        Session session = new Session();
+        String user = request.getParameter("username");
+        String pass = request.getParameter("password");
         
-//        ses.login(userId, null);
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(pass.getBytes());
+            BigInteger no = new BigInteger(1, messageDigest);
+            String hashtext = no.toString(16); 
+            while (hashtext.length() < 32) { 
+                hashtext = "0" + hashtext; 
+            }
+            if (session.login(user, hashtext)){
+                // Set user session
+                hSession.setAttribute("user", user);
+                response.sendRedirect("/SOEN387A2/index.jsp");
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        if(ses.isUserLoggedIn()){
-         response.sendRedirect("index.jsp");
-        }
-        else{
-            response.sendRedirect("login.jsp");
-        }
+
     }
 }
