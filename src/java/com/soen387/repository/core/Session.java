@@ -37,29 +37,29 @@ public class Session {
     public boolean login(String username, String password){
         JSONParser jsonParser = new JSONParser();
         
-        try (FileReader reader = new FileReader("C:\\Users\\zheng\\Desktop\\SOEN387A2\\src\\java\\authentication\\userCredentials.json"))
-        {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
- 
-            JSONArray credentials = (JSONArray) obj;
-            System.out.println(credentials);
-             
-            JSONObject jo;
-            //Iterate over employee array
-            for(Object o : credentials){
-                jo = (JSONObject) o;
-                
-                if (username.equals(jo.get("username")) && password.equals(jo.get("pass")))
-                    return true;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try (FileReader reader = new FileReader("C:\\Users\\zheng\\Desktop\\SOEN387A2\\src\\java\\authentication\\userCredentials.json"))
+//        {
+//            //Read JSON file
+//            Object obj = jsonParser.parse(reader);
+// 
+//            JSONArray credentials = (JSONArray) obj;
+//            System.out.println(credentials);
+//             
+//            JSONObject jo;
+//            //Iterate over employee array
+//            for(Object o : credentials){
+//                jo = (JSONObject) o;
+//                
+//                if (username.equals(jo.get("username")) && password.equals(jo.get("pass")))
+//                    return true;
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         
         return false;
     }

@@ -75,7 +75,7 @@ public class addUpdateBook extends HttpServlet {
         CoverImage c = new CoverImage("image", filePart);
         Author a1 = new Author(firstName, lastName);
         Book b1 = new Book(isbn, title, description, a1, c, publisherCompany ,publisherAddress);
-        out.println("Sucessfully addeed to respository for book.\n" + filePart);
+
         if(!"".equals(isbn) && !"".equals(title) && !"".equals(description) ){
             if (request.getParameter("addBtn") != null) {
                   try {
@@ -84,7 +84,9 @@ public class addUpdateBook extends HttpServlet {
                   } catch (ClassNotFoundException ex) {
                       Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
                   }
-                out.println("updated book");
+                 out.println("Sucessfully addeed book to respository.\n");
+                 out.println("<a href=\"/SOEN387A2/\">Click here to go back home</p>");
+                
             }
             else if(request.getParameter("updateBtn") != null){
                   try {
@@ -92,12 +94,15 @@ public class addUpdateBook extends HttpServlet {
                   } catch (ClassNotFoundException ex) {
                       Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
                   }
+                  
+                   out.println("Sucessfully updated book to respository.\n");
+                out.println("<a href=\"/SOEN387A2/\">Click here to go back home</p>");
                 out.println("show");
             }
         }
             
 //        out.println("Sucessfully addeed to respository for book.\n");
-        out.println("Title: " + title + "\nisbn: " + isbn + "\ndescription: " + description + " ");
+//        out.println("Title: " + title + "\nisbn: " + isbn + "\ndescription: " + description + " ");
             
 //       response.sendRedirect(response.encodeRedirectURL("http://localhost:8080/SOEN387A2/"));
     }

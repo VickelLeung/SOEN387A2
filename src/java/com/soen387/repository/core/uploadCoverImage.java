@@ -84,12 +84,14 @@ public class uploadCoverImage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
                 
-        int id = 1;
+//        int id = 0;
+//        
+//        String ids = request.getParameter("addPic");
         
-//        String ids = request.getParameter("test");
-        
-        
+//        id = Integer.parseInt(ids);
         PrintWriter out = response.getWriter();
+        
+     
         
        
 //        if(ids != null){
@@ -102,6 +104,13 @@ public class uploadCoverImage extends HttpServlet {
 //         out.write("id " + fBlob);
             repositoryCore repo = repositoryCore.getInstance();
         if(photo != null){
+            
+             int id = 0;
+            String ids = request.getParameter("hdnbt");
+            out.write("<p>You have uploaded the image</p>");
+            out.write("<a href=\"/SOEN387A2/\">Click here to go back home</p>");
+            id = Integer.parseInt(ids);	
+            
             if (request.getParameter("uploadBtn") != null) {
             try {
                 repo.setImage(photo, id);

@@ -30,7 +30,7 @@
     </servlet-mapping>
     <error-page>
         <error-code>404</error-code>
-        <location>/404page.html</location>
+        <location>/index.jsp</location>
     </error-page>
     <session-config>
         <session-timeout>

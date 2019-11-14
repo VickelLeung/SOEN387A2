@@ -5,19 +5,11 @@
 --%>
 
 <%@page import="com.soen387.repository.core.repositoryCore"%>
-<%@page import="com.soen387.repository.core.Session"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<%
-if (session.getAttribute("user") == null) {
-    response.sendRedirect("/SOEN387A2/login.jsp");
-}
-%>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -28,7 +20,6 @@ if (session.getAttribute("user") == null) {
     <body>
         <h1>SOEN 387 - Book Repository</h1>
            <a href="logout.jsp" >Logout</a>
-        <h2>Hello: <%= session.getAttribute("user") %></h2>
         <div class="home">
              <h3>Homepage</h3>
             

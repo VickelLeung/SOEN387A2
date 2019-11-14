@@ -11,4 +11,7 @@ package com.soen387.repository.core;
  */
 public class RepositoryException {
     
+    
+    
+    
 }

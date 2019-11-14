@@ -72,7 +72,7 @@ public class repositoryCore {
            
             bookList += "<td><img width=\"250px\" height=\"300px\" src=\"imageServlet?id=" +myRs.getString("id")+ "\"/>"
                     +" <form enctype=\"multipart/form-data\"  action=\"uploadCoverImage\" method=\"POST\">"
-                    + "<input type=\"hidden\" name=\"test\" value=\""+ myRs.getString("id")+"\"/>"
+                    + "<input type=\"hidden\" name=\"hdnbt\" value=\""+ myRs.getString("id")+"\"/>"
                     + "<input type=\"file\" name=\"photo\" value=\"Add a cover picture\">"
                     + "<input type=\"submit\" name=\"uploadBtn\" value=\"upload cover\" />"
                     + "</form></td>";
@@ -152,6 +152,7 @@ public class repositoryCore {
             row.put(6, rs.getString("lastName"));
             row.put(7, rs.getString("publisher_Company"));
             row.put(8, rs.getString("publisher_address"));
+            row.put(9, rs.getString("id"));
             }
 
      return row;
@@ -164,48 +165,52 @@ public int addNewBook(Book bookInfo) throws ClassNotFoundException, IOException{
         Statement myStm = null;
 
         generateId();
-        String getTitle = bookInfo.getTitle();
-        String getDescription = bookInfo.getDescription();
-        String getIsbn = bookInfo.getIsbn();
-        String firstName = bookInfo.getFirstName();
-        String lastName = bookInfo.getLastName();
-        String publisherCompany = bookInfo.getPublisherCompany();
-        String publisherAddress = bookInfo.getPublisherAddress();
-//        Part img = bookInfo.getPicture();
         
-        System.out.println("t:" + getTitle + " d:" + getDescription + " fn: " + firstName + " ln:" + lastName +" p: " + publisherCompany + " pa: " + publisherAddress);
-//        System.out.println("img: " + img);
+        //check if there is any duplicate isbn
         
-      try {
-        Class.forName("com.mysql.jdbc.Driver");
-        myCon = DriverManager.getConnection(dbURL, user, pw);
-        myStm = myCon.createStatement();
         
-        String sql = "INSERT INTO book (id ,title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
-           PreparedStatement statement = myCon.prepareStatement(sql);
-           statement.setInt(1, id);
-           statement.setString(2, getTitle);
-           statement.setString(3,getDescription);
-           statement.setString(4, getIsbn);
-           statement.setString(5, firstName);
-           statement.setString(6, lastName);
-//           statement.setBinaryStream(7, img.getInputStream(), (int)  img.getSize());
-           statement.setString(7, "a picture");
-           statement.setString(8, publisherCompany);
-           statement.setString(9, publisherAddress);
-           
-           statement.execute();
-        
-        myCon.commit();
-        myStm.close();
-        myCon.close();
-        
-        //book added
-        ok = 1;
-        } catch(SQLException e) {
-        for (Throwable t : e)
-        t.printStackTrace();
-        }     
+            String getTitle = bookInfo.getTitle();
+            String getDescription = bookInfo.getDescription();
+            String getIsbn = bookInfo.getIsbn();
+            String firstName = bookInfo.getFirstName();
+            String lastName = bookInfo.getLastName();
+            String publisherCompany = bookInfo.getPublisherCompany();
+            String publisherAddress = bookInfo.getPublisherAddress();
+    //        Part img = bookInfo.getPicture();
+
+            System.out.println("t:" + getTitle + " d:" + getDescription + " fn: " + firstName + " ln:" + lastName +" p: " + publisherCompany + " pa: " + publisherAddress);
+    //        System.out.println("img: " + img);
+
+          try {
+            Class.forName("com.mysql.jdbc.Driver");
+            myCon = DriverManager.getConnection(dbURL, user, pw);
+            myStm = myCon.createStatement();
+
+            String sql = "INSERT INTO book (id ,title, description, ISBN, firstName, lastName, picture, publisher_company, publisher_address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+               PreparedStatement statement = myCon.prepareStatement(sql);
+               statement.setInt(1, id);
+               statement.setString(2, getTitle);
+               statement.setString(3,getDescription);
+               statement.setString(4, getIsbn);
+               statement.setString(5, firstName);
+               statement.setString(6, lastName);
+    //           statement.setBinaryStream(7, img.getInputStream(), (int)  img.getSize());
+               statement.setString(7, "a picture");
+               statement.setString(8, publisherCompany);
+               statement.setString(9, publisherAddress);
+
+               statement.execute();
+
+            myCon.commit();
+            myStm.close();
+            myCon.close();
+
+            //book added
+            ok = 1;
+            } catch(SQLException e) {
+            for (Throwable t : e)
+            t.printStackTrace();
+            }     
     
     return ok;
 }
@@ -219,13 +224,13 @@ public void updateBookInfo(int id, Book b) throws ClassNotFoundException{
         myCon = DriverManager.getConnection(dbURL, user, pw);
         myStm = myCon.createStatement();
         
+        String getIsbn = b.getIsbn();
         String getTitle = b.getTitle();
         String getDescription = b.getDescription();
-        String getIsbn = b.getIsbn();
         String firstName = b.getFirstName();
         String lastName = b.getLastName();
-
-         String sql = "UPDATE book SET title = ? SET description = ? SET firstName = ? SET lastName = ? WHERE ISBN = ?";
+        
+        String sql = "UPDATE book SET title = ? , description = ? , firstName = ? , lastName = ? WHERE ISBN = ?";
             PreparedStatement statement = myCon.prepareStatement(sql);
             statement.setString(1, getTitle);
             statement.setString(2, getDescription);

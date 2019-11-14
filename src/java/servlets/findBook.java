@@ -11,7 +11,12 @@ import com.soen387.repository.core.repositoryCore;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +31,10 @@ import javax.servlet.http.Part;
  * @author Vicke
  */
 public class findBook extends HttpServlet {
-
+    
+     private static final String user = "soen387a2";
+     private static final String pw = "Lr00IQ5T~!Ma";
+     private static final String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -88,32 +96,38 @@ public class findBook extends HttpServlet {
         String isbn = request.getParameter("isbnBtn");
         
             int id = 0;
-            id = Integer.parseInt(getId);
+            
          
         HashMap bookInfo = new HashMap();
         repositoryCore repo = repositoryCore.getInstance();
         
             if (request.getParameter("idBtn") != null) {
                 try {
+                    id = Integer.parseInt(getId);
                     bookInfo = repo.getBookInfo(id);
                 } catch (SQLException ex) {
                     Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
                 }
-           
+//            String sql = "SELECT id FROM book where ISBN = ? ORDER BY id DESC LIMIT 1;";
             }
             else if(request.getParameter("isbnBtn") != null){
                 try {
                     bookInfo = repo.getBookInfo(isbn);
                    
+                    //find id
+                    id = Integer.parseInt(bookInfo.get(9).toString());
+                    
+                      
                 } catch (SQLException ex) {
                     Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
                 } 
             }
-            
+           
+//          String idsd = bookInfo.get(9).toString();
           String cover = bookInfo.get(1).toString();
           String title = bookInfo.get(2).toString();
           String ISBN = bookInfo.get(3).toString();
@@ -139,8 +153,8 @@ public class findBook extends HttpServlet {
             out.write("<tr>");
             
             out.write("<tr>");
-           
-            out.write("<td>" + cover + "</td>");
+            
+            out.write("<td><img width=\"250px\" height=\"300px\" src=\"imageServlet?id=" + id + "\" /> </td>");
             out.write("<td>" + title + "</td>");
             out.write("<td>" + ISBN + "</td>");
             out.write("<td>" + description + "</td>");
