@@ -30,7 +30,7 @@ import javax.servlet.http.Part;
  *
  * @author Vicke
  */
-public class findBook extends HttpServlet {
+public class viewBookDetails extends HttpServlet {
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -73,7 +73,97 @@ public class findBook extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         PrintWriter out = response.getWriter();
+        
+        
+//          String getId =  request.getParameter("id");
+      
+        HashMap bookInfo = new HashMap();
+        repositoryCore repo = repositoryCore.getInstance();
+        
+         
+                try {
+//                    id = Integer.parseInt(getId);
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    bookInfo = repo.getBookInfo(id);
+                } catch (SQLException ex) {
+                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+          String cover = bookInfo.get(1).toString();
+          String title = bookInfo.get(2).toString();
+          String ISBN = bookInfo.get(3).toString();
+          String description =  bookInfo.get(4).toString();
+          String firstName = bookInfo.get(5).toString();
+          String lastName =  bookInfo.get(6).toString();
+          String company = bookInfo.get(7).toString();
+          String address = bookInfo.get(8).toString();
+           
+
+           if(request.getParameter("view").equals("true")){
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<link href=\"css/viewDetail.css\" rel=\"stylesheet\" type=\"text/css\" />");
+            out.println("<title>Servlet viewBookDetails</title>");            
+            out.println("</head>");
+            
+            
+            out.println("<body>");
+            
+            out.println("<div class=container>");
+            out.println("<h1>"+ title +"</h1>");
+            out.println("<h2>"+ firstName + " " + lastName +"</h2>");
+            out.write("<td><img width=\"250px\" height=\"300px\" src=\"imageServlet?id=" + request.getParameter("id") + "\" /> </td>");
+            out.println("<h4>"+ company +"</h4>");
+            out.println("<h4>"+ address +"</h4>");
+            out.println("<h4>"+ ISBN +"</h4>");
+            out.println("</div>");
+            
+            out.println("</body>");
+            out.println("</html>");
+            }
+            else if(request.getParameter("view").equals("false")){
+                 out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<link href=\"css/viewDetail.css\" rel=\"stylesheet\" type=\"text/css\" />");
+            out.println("<title>Servlet viewBookDetails</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            
+            out.write("<div class=container>");
+            out.write("<table align=\"center\" border=\"1\">");
+            out.write("<tr>");
+            out.write("<td><b>Title</b></td>");
+            out.write("<td><b>ISBN</b></td>");
+            out.write("<td><b>Description</b></td>");
+            out.write("<td><b>First Name</b></td>"); 
+            out.write("<td><b>Last Name</b></td>"); 
+            out.write("<td><b>Publisher Company</b></td>");
+            out.write("<td><b>Publisher address</b></td>");
+            out.write("<tr>");
+            
+            out.write("<tr>");
+            out.write("<td>" + title + "</td>");
+            out.write("<td>" + ISBN + "</td>");
+            out.write("<td>" + description + "</td>");
+            out.write("<td>" + firstName + "</td>");
+            out.write("<td>" + lastName + "</td>");
+            out.write("<td>" + company + "</td>");
+            out.write("<td>" + address + "</td>");
+            out.write("</tr>");
+            out.write("</table>");
+            out.write("<a class=link href=addUpdateBook.jsp>Click to edit book </a>");
+            out.write("<div>");
+            
+            out.println("</body>");
+            out.println("</html>");
+            }
+               
+          
     }
 
     /**
@@ -87,82 +177,10 @@ public class findBook extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        
-        String getId =  request.getParameter("idBtn");
-        String isbn = request.getParameter("isbnBtn");
-        
-            int id = 0;
-            
-         
-        HashMap bookInfo = new HashMap();
-        repositoryCore repo = repositoryCore.getInstance();
-        
-            if (request.getParameter("idBtn") != null) {
-                try {
-                    id = Integer.parseInt(getId);
-                    bookInfo = repo.getBookInfo(id);
-                } catch (SQLException ex) {
-                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
-                }
-//            String sql = "SELECT id FROM book where ISBN = ? ORDER BY id DESC LIMIT 1;";
-            }
-            else if(request.getParameter("isbnBtn") != null){
-                try {
-                    bookInfo = repo.getBookInfo(isbn);
-                   
-                    //find id
-                    id = Integer.parseInt(bookInfo.get(9).toString());
-                    
-                      
-                } catch (SQLException ex) {
-                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(findBook.class.getName()).log(Level.SEVERE, null, ex);
-                } 
-            }
-           
-//          String idsd = bookInfo.get(9).toString();
-          String cover = bookInfo.get(1).toString();
-          String title = bookInfo.get(2).toString();
-          String ISBN = bookInfo.get(3).toString();
-          String description =  bookInfo.get(4).toString();
-          String firstName = bookInfo.get(5).toString();
-          String lastName =  bookInfo.get(6).toString();
-          String company = bookInfo.get(7).toString();
-          String address = bookInfo.get(8).toString();
-           
-//            display book information 
-            
-            out.write("<p><b>Here is the book you were trying to look for in our repository!</b></p>");
-            out.write("<table align=\"center\" border=\"1\">");
-            out.write("<tr>");
-            out.write("<td><b>Cover</b></td>");
-            out.write("<td><b>Title</b></td>");
-            out.write("<td><b>ISBN</b></td>");
-            out.write("<td><b>Description</b></td>");
-            out.write("<td><b>First Name</b></td>"); 
-            out.write("<td><b>Last Name</b></td>"); 
-            out.write("<td><b>Publisher Company</b></td>");
-            out.write("<td><b>Publisher address</b></td>");
-            out.write("<tr>");
-            
-            out.write("<tr>");
-            
-            out.write("<td><img width=\"250px\" height=\"300px\" src=\"imageServlet?id=" + id + "\" /> </td>");
-            out.write("<td>" + title + "</td>");
-            out.write("<td>" + ISBN + "</td>");
-            out.write("<td>" + description + "</td>");
-            out.write("<td>" + firstName + "</td>");
-            out.write("<td>" + lastName + "</td>");
-            out.write("<td>" + company + "</td>");
-            out.write("<td>" + address + "</td>");
-
-            out.write("</tr>");
-            out.write("</table>");
+       
                      
         }
         
 }
+
+

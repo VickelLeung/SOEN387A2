@@ -16,13 +16,13 @@
         <h1>SOEN 387 - Book Repository</h1>       
         <div id="loginContainer">
              <h3>Login</h3>
-            <form>
+             <form method="POST" action="${pageContext.request.contextPath}/login">
                 <div className="userInput">
-                <p>Username: <input type="text"/> </p>
+                <p>Username: <input name="username" type="text"/> </p>
                 </div>
                 
                 <divclassName="userInput">
-                <p>Password: <input type="password"/> </p>
+               <p>Password: <input name="password" type="password"/> </p>
                 </div>
                 
                 <div className="submitBtn">

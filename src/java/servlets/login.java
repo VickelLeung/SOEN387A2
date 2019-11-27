@@ -95,7 +95,7 @@ public class login extends HttpServlet {
             while (hashtext.length() < 32) { 
                 hashtext = "0" + hashtext; 
             }
-            if (session.login(user, hashtext)){
+            if (session.login(user, pass)){
                 // Set user session
                 hSession.setAttribute("user", user);
                 response.sendRedirect("/SOEN387A2/index.jsp");

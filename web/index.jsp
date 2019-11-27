@@ -1,15 +1,14 @@
-<%-- 
-    Document   : index
-    Created on : 29-Oct-2019, 1:42:19 PM
-    Author     : Vickel
---%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="com.soen387.repository.core.repositoryCore"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -78,16 +77,85 @@
             <td><b>Publisher Company</b></td>
             <td><b>Publisher address</b></td>
             </tr>
-            <%
-                 repositoryCore repo = repositoryCore.getInstance();
-                String display = repo.listAllBooks();
-            %>
+           
             <tr bgcolor="#E0FFFF">
-            
-            <%= display %>
-                
-            </tr>
 
+            
+            <% 
+                repositoryCore repo = repositoryCore.getInstance();
+                HashMap<Integer,ArrayList<String>> list = repo.listAllBooks();
+                
+                  for (HashMap.Entry<Integer, ArrayList<String>> entry : list.entrySet() ) {
+                    
+                    int key = entry.getKey();
+                    
+                    
+                   ArrayList<String> row = entry.getValue();
+                   String title = row.get(0);
+                   String isbn = row.get(1);
+                   String description = row.get(2);
+                   String firstName = row.get(3);
+                   String lastName = row.get(4);
+                   String company = row.get(5);
+                   String address = row.get(6);
+                   
+                 %>
+                 
+                 <tr>
+                 <td>
+                     <img width="250" src="imageServlet?id=<%=key %>"  />
+                     <form enctype="multipart/form-data"  action="uploadCoverImage" method="POST">
+                     <input type="hidden" name="hdnbt" value="<%=key %>" />    
+                     <input type="file" name="photo"  />    
+                     <input type="submit" name="uploadBtn" value="Upload Cover" />
+                        </form>
+                 </td>
+                 
+                 <td><%=title %></td>
+                <td> <%=isbn %> </td>
+                <td> <%=description%> </td>
+                <td> <%=firstName %></td>
+                <td> <%=lastName %></td>
+                <td> <%=company%> </td>
+                <td> <%=address%> </td>
+                 
+           <div>
+               
+               <td>
+            <form action="viewBookDetails"  />    
+                  <input type="hidden" name="id" value="<%=key %>" />
+                   <input type="hidden" name="view" value="true" />
+               
+                      <input type="submit" value="View Cover">
+                
+            </form>
+                  
+            <form action="viewBookDetails" />    
+                <input type="hidden" name="id" value="<%=key %>" />
+                <input type="hidden" name="view" value="false" />
+                
+                    <input type="submit"  value="View details">
+                
+            </form>
+                
+            </td>
+               
+            <form action="deleteBook" method="Post" />    
+                  <input type="hidden" name="hdnbt" value="<%=key %>" />
+                  <td>
+                      <input type="submit" name="deleteBtn" value="delete">
+                  </td>
+            </form>
+                
+           </div>
+            </tr>
+           
+              <%   
+                 }
+            %>
+              
+            </tr>
+            </tr>
             </table>             
         </div>
 <script>

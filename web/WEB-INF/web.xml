@@ -12,6 +12,10 @@
         <servlet-name>uploadCoverImage</servlet-name>
         <servlet-class>com.soen387.repository.core.uploadCoverImage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>viewBookDetails</servlet-name>
+        <servlet-class>servlets.viewBookDetails</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>addUpdateBook</servlet-name>
         <url-pattern>/addUpdateBook</url-pattern>
@@ -24,7 +28,7 @@
         <servlet-name>uploadCoverImage</servlet-name>
         <url-pattern>/uploadCoverImage</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>imageServlet</servlet-name>
         <url-pattern>/imageServlet</url-pattern>
     </servlet-mapping>
@@ -32,6 +36,10 @@
         <error-code>404</error-code>
         <location>/index.jsp</location>
     </error-page>
+    <servlet-mapping>
+        <servlet-name>viewBookDetails</servlet-name>
+        <url-pattern>/viewBookDetails</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

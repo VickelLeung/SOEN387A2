@@ -33,9 +33,13 @@ import javax.servlet.http.HttpServletResponse;
 public class imageServlet extends HttpServlet {
 
     
-     private static final String user = "soen387a2";
-     private static final String pw = "Lr00IQ5T~!Ma";
-     private static final String dbURL = "jdbc:mysql://den1.mysql2.gear.host/soen387a2";
+     private static final String user = "sgroot";
+     private static final String pw = "pSIfClQJ6fMkZK-r";
+     private static final String dbURL = "jdbc:mysql://SG-soen-1578-master.servers.mongodirector.com:3306/soen";
+    
+//     final String dbURL = "jdbc:mysql://remotemysql.com/B5IHEgosWf";
+//    final String userName = "B5IHEgosWf";
+//    final String password = "xMpWmaFbaK";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -92,7 +96,7 @@ public class imageServlet extends HttpServlet {
         if(getId !=null){
         int id = Integer.parseInt(getId);
        
-        String sql = "SELECT picture FROM book where id =" + id + ";";
+        String sql = "SELECT picture FROM Book where id =" + id + ";";
         PreparedStatement statement = myCon.prepareStatement(sql); 
 //       statement.execute();
         rs = statement.executeQuery(sql);

@@ -90,12 +90,16 @@ public class addUpdateBook extends HttpServlet {
             }
             else if(request.getParameter("updateBtn") != null){
                   try {
-                      repo.updateBookInfo(1, b1);
+                      try {
+                          repo.updateBookInfo(b1);
+                      } catch (SQLException ex) {
+                          Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
+                      }
                   } catch (ClassNotFoundException ex) {
                       Logger.getLogger(addUpdateBook.class.getName()).log(Level.SEVERE, null, ex);
                   }
                   
-                   out.println("Sucessfully updated book to respository.\n");
+                out.println("Sucessfully updated book to respository.\n");
                 out.println("<a href=\"/SOEN387A2/\">Click here to go back home</p>");
                 out.println("show");
             }
